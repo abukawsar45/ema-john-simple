@@ -35,27 +35,25 @@ const Shop = () => {
         // step 5: loop er bahire ase "setState" a value set korte hobe
         setCart(savedCart);
     },[products])
-    // useEffect(() => {
-    //     // console.log('+++++',products)
-    //     const storeCart = getShoppingCart();
-    //     console.log(storeCart);
-    //     // step 1: get id
-    //     for (let id in storeCart) {
-    //         // console.log(id)
-    //         // step 2: get the product by using id with find function
-    //         const addedProduct = products.find(product => product.id === id)
-    //          /* equal 3ta dile (===) dile type mile na...so undefined dekhay  */;
-    //         console.log(addedProduct,'*******************')
-    //         // step 3: get quantity of the product
-    //         const quantity = storeCart[];
-    //         // console.log(quantity)
-    //         addedProduct.quantity = quantity;
-    //         console.log(addedProduct)
-    //     }
-    // },[products])
+
     const handleAddToCart = (product) => {
         // cart.push(product); 
-        const newCart = [...cart, product];
+        let newCart = [];
+        // const newCart = [...cart, product];
+        // if priduct doesn't exists in the cart,then  set quantity = 1;
+        // if exists update quantity by 1
+        const exists = cart.find(prdct => prdct.id === product.id);
+        if (!exists) {
+            product.quantity = 1;
+            newCart = [...cart, product];
+        }
+        else {
+            exists.quantity = exists.quantity + 1;
+            const remaining = cart.filter(prdct => prdct.id !== product.id);
+            newCart = [...remaining, exists];
+        }
+
+
         setCart(newCart);
         addToDb(product.id)
     }
