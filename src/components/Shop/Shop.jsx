@@ -14,9 +14,45 @@ const Shop = () => {
             .then(data => setProducts(data))
     }, []);
     useEffect(() => {
-        const storeCart = getShoppingCart();
-        console.log(storeCart)
-    },[])
+        const storeddCart = getShoppingCart();
+        const savedCart = [];
+        // --- step 1: get id of the addedCart ---
+        for (const id in storeddCart) { 
+            // ___step 2: get product from products state by using id___
+            const addedProduct = products.find(product => product.id === id);
+            //          /* equal 3ta dile (===) dile type mile na...so undefined dekhay  */;
+            // console.log(addedProduct)
+            if (addedProduct) {
+                // step 3: add quantity;
+                const quantity = storeddCart[id];
+                addedProduct.quantity = quantity;
+                // step 4: add tlhe addedProduct to the savedCart array(state er array te push hyna..eta amdr custom array)
+                // -----------step 4: push the new product in a saver array--------
+                savedCart.push(addedProduct);
+            }
+            // console.log(addedProduct)
+        }
+        // step 5: loop er bahire ase "setState" a value set korte hobe
+        setCart(savedCart);
+    },[products])
+    // useEffect(() => {
+    //     // console.log('+++++',products)
+    //     const storeCart = getShoppingCart();
+    //     console.log(storeCart);
+    //     // step 1: get id
+    //     for (let id in storeCart) {
+    //         // console.log(id)
+    //         // step 2: get the product by using id with find function
+    //         const addedProduct = products.find(product => product.id === id)
+    //          /* equal 3ta dile (===) dile type mile na...so undefined dekhay  */;
+    //         console.log(addedProduct,'*******************')
+    //         // step 3: get quantity of the product
+    //         const quantity = storeCart[];
+    //         // console.log(quantity)
+    //         addedProduct.quantity = quantity;
+    //         console.log(addedProduct)
+    //     }
+    // },[products])
     const handleAddToCart = (product) => {
         // cart.push(product); 
         const newCart = [...cart, product];
